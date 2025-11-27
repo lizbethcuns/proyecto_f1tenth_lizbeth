@@ -84,6 +84,6 @@ El controlador usa el algoritmo **Follow the Gap** para navegación reactiva:
 Resultados:
 Aun que no se tuvo los resultados esperados que fue que el vehiculo complete todo el circuito y de las 10 vueltas en el menor tiempo,uno de los logros que se obtuvo es lograr cargar el simulador con el mapa requerido, y aparte que el auto logre estar centrado en el punto que yo lo defini, aparte tambien se logro
 
-## Resultados y Evidencias
+## Click para visualizar el video
 [![Video de 10 vueltas limpias](evidencia_budapest_correcta.png)](https://youtu.be/K_hcmxP4gAg)
 
