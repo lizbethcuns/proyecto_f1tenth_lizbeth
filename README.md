@@ -1,3 +1,8 @@
+# Proyecto F1Tenth – Lizbeth Cuns  
+**Follow the Gap + Contador de vueltas automático**
+
+![Evidencia del Budapest](evidencia_budapest_10vueltas.png)
+
 Descripción del Proyecto
 
 Este proyecto implementa un controlador reactivo tipo Follow The Gap (FTG) para un vehículo autónomo F1Tenth utilizando ROS 2 Humble.
