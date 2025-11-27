@@ -8,6 +8,28 @@ Descripción del Proyecto
 Este proyecto implementa un controlador reactivo tipo Follow The Gap (FTG) para un vehículo autónomo F1Tenth utilizando ROS 2 Humble.
 El controlador analiza los datos del sensor LIDAR para identificar el mayor espacio despejado (gap) y dirigir el vehículo hacia ese punto manteniendo una navegación segura.
 
+### ¿Por qué Follow the Gap?
+- Es un algoritmo **reactivo**: No necesita mapa global ni planificación compleja; solo responde al entorno inmediato.
+- Ideal para pistas como Budapest con curvas cerradas y secciones estrechas.
+- Ventajas: Robusto a ruido del LIDAR, evita colisiones frontales y laterales, y adapta velocidad automáticamente.
+
+## Flujo de Ejecución del Controlador
+
+1. **Suscripción**: Recibe LIDAR (/scan) cada ciclo.
+2. **Preprocesamiento**: Limpia datos, aplica disparity extender y suavizado (filtro gaussiano sigma=2.0).
+3. **Burbuja**: Anula rangos cerca del obstáculo más próximo
+4. **Cálculo**: Ángulo = angle_min + idx * increment; vel según abs(angulo).
+
+## Parámetros Configurables
+
+| Parámetro            | Valor por Defecto | Efecto                                               |
+|----------------------|-------------------|------------------------------------------------------|
+| `limite_giro_deg`    | 34.0              | Ángulo máximo de steering (grados → radianes)        |
+| `radio_burbuja`      | 160               | Tamaño de la zona prohibida (rayos LIDAR)            |
+| `seguridad_frontal`  | 1.2 m             | Distancia mínima frontal para frenar                 |
+| `vel_recta`          | 5.8 m/s           | Velocidad máxima en rectas                           |
+| `vel_curva`          | 2.5 m/s           | Velocidad mínima en curvas fuertes                   |
+
 El proyecto incluye:
 
 Controlador Follow The Gap
@@ -20,17 +42,6 @@ Integración con el simulador oficial F1Tenth
 
 Compatibilidad con el mapa Budapest
 
-Estructura del Código
-proyecto_f1tenth_lizbeth/
- ├── LICENSE
- ├── README.md
- ├── liz_controlador_v2/
- │   ├── liz_controlador_v2/
- │   │    ├── seguidor_gap_node.py
- │   │    ├── contador_vueltas_node.py
- │   │    └── __init__.py
- │   ├── setup.py
- │   └── package.xml
 ## Enfoque Técnico: Follow the Gap (FTG)
 
 El controlador usa el algoritmo **Follow the Gap** para navegación reactiva:
@@ -38,7 +49,7 @@ El controlador usa el algoritmo **Follow the Gap** para navegación reactiva:
 - **Preprocesamiento**: Limpia NaN/Inf a 30m, aplica disparity extender para evitar "paredes falsas" en curvas cerradas.
 - **Burbuja de seguridad**: Crea un área prohibida de 160 rayos alrededor del obstáculo más cercano (min(ranges)).
 - **Detección de gaps**: Encuentra segmentos continuos donde ranges > 0.2m; selecciona el más largo (mínimo 80 rayos para seguridad).
-- **Punto objetivo**: En el gap más grande, elige el punto más lejano pero sesgado al centro (np.argsort[-15:] y argmin a centro) para curvas suaves.
+- **Punto objetivo**: En el gap más grande, elige el punto más lejano pero sesgado al centro (np.agsort[-15:] y argmin a centro) para curvas suaves.
 - **Salida**: Comando AckermannDriveStamped (/drive) con velocidad adaptativa (5.8m/s en recta, 2.5m/s en curvas >28°) y steering limitado a ±34°.
 
 ## Estructura del Código
