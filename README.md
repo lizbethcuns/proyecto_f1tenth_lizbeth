@@ -16,14 +16,16 @@ Integración con el simulador oficial F1Tenth
 Compatibilidad con el mapa Budapest
 
 Estructura del Código
-liz_controlador_v2/
+proyecto_f1tenth_lizbeth/
+ ├── LICENSE
+ ├── README.md
  ├── liz_controlador_v2/
- │     ├── seguidor_gap_node.py          # Controlador Follow the Gap
- │     ├── contador_vueltas_node.py      # Contador + cronómetro
- │     └── __init__.py
- ├── setup.py
- ├── package.xml
-
+ │   ├── liz_controlador_v2/
+ │   │    ├── seguidor_gap_node.py
+ │   │    ├── contador_vueltas_node.py
+ │   │    └── __init__.py
+ │   ├── setup.py
+ │   └── package.xml
 ## Enfoque Técnico: Follow the Gap (FTG)
 
 El controlador usa el algoritmo **Follow the Gap** para navegación reactiva:
@@ -55,6 +57,13 @@ El controlador usa el algoritmo **Follow the Gap** para navegación reactiva:
 6. Lanza simulador (Budapest): `ros2 launch f1tenth_gym_ros gym_bridge_launch.py map:=Budapest`
 7. Lanza FTG: `ros2 run liz_controlador_v2 seguidor_gap`
 8. Lanza contador: `ros2 run liz_controlador_v2 contador_vueltas`
+
+## Explicacion de contador de vueltas
+1. Registra la primera posición como “línea de meta”
+2. Detecta cuando el robot sale y entra de la zona de meta
+3. Inicia cronómetro al empezar vuelta
+4. Guarda tiempo al terminar vuelta
+5. Suma vueltas y detiene el robot cuando se cumple el máximo   (esto no fue posible ya que el carro no logro dar 1 vuelta)
 
 Resultados:
 Aun que no se tuvo los resultados esperados que fue que el vehiculo complete todo el circuito y de las 10 vueltas en el menor tiempo,uno de los logros que se obtuvo es lograr cargar el simulador con el mapa requerido, y aparte que el auto logre estar centrado en el punto que yo lo defini, aparte tambien se logro
